@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitwise Calculator</title>
+    <link rel="stylesheet" href="230101021-lab_7.-binary_Calculator.css">
+</head>
+<body>
+    <div class="calculator">
+        <h1>Bitwise Calculator</h1>
+        <input type="text" id="input" placeholder="Enter Binary Numbers">
+        <div class="buttons">
+            <button onclick="insertOperator('&')">AND</button>
+            <button onclick="insertOperator('|')">OR</button>
+            <button onclick="insertOperator('^')">XOR</button>
+            <button onclick="insertOperator('~')">NOT</button>
+            <button onclick="insertOperator('<<')">Left Shift </button>
+            <button onclick="insertOperator('>>')">Right Shift</button>
+            <button id="calculate" onclick="calculate()">Calculate</button>
+        </div>
+    </div>
+
+  <script src="230101021-lab_7-Binary_Calculator.js"></script>  
+</body>
+</html>
