@@ -105,26 +105,33 @@ document.addEventListener('DOMContentLoaded', () => {
     function calculate() {
         const expression = display.value;
         let result;
+        let steps = [];
 
         try {
             if (expression.includes('∧')) {
                 const [a, b] = expression.split('∧').map(num => parseInt(num.trim(), 2));
                 result = a & b;
+                steps = explainAND(a, b);
             } else if (expression.includes('∨')) {
                 const [a, b] = expression.split('∨').map(num => parseInt(num.trim(), 2));
                 result = a | b;
+                steps = explainOR(a, b);
             } else if (expression.includes('⊕')) {
                 const [a, b] = expression.split('⊕').map(num => parseInt(num.trim(), 2));
                 result = a ^ b;
+                steps = explainXOR(a, b);
             } else if (expression.startsWith('¬')) {
                 const a = parseInt(expression.replace('¬', '').trim(), 2);
                 result = ~a & 0xFFFFFFFF; // Ensure 32-bit result
+                steps = explainNOT(a);
             } else if (expression.startsWith("1'sC(")) {
                 const binary = expression.slice(5, -1);
                 result = parseInt(calculateOnesComplement(binary), 2);
+                steps = explainOnesComplement(binary);
             } else if (expression.startsWith("2'sC(")) {
                 const binary = expression.slice(5, -1);
                 result = parseInt(calculateTwosComplement(binary), 2);
+                steps = explainTwosComplement(binary);
             } else if (expression.includes('<<')) {
                 const [a, b] = expression.split('<<').map(num => parseInt(num.trim(), 2));
                 result = a << b;
@@ -150,8 +157,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add the result to history
             history.push(result);
             currentIndex = history.length - 1;
+
+            // Store steps for stepwise explanation
+            localStorage.setItem('steps', JSON.stringify(steps));
         } catch (error) {
             display.value = 'Error';
+            localStorage.removeItem('steps');
         }
     }
 
@@ -189,8 +200,70 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function explainAND(a, b) {
+        return [
+            `Step 1: Convert ${a} and ${b} to binary`,
+            `A: ${a.toString(2).padStart(8, '0')}`,
+            `B: ${b.toString(2).padStart(8, '0')}`,
+            `Step 2: Perform bitwise AND operation`,
+            `Result: ${(a & b).toString(2).padStart(8, '0')}`
+        ];
+    }
+
+    function explainOR(a, b) {
+        return [
+            `Step 1: Convert ${a} and ${b} to binary`,
+            `A: ${a.toString(2).padStart(8, '0')}`,
+            `B: ${b.toString(2).padStart(8, '0')}`,
+            `Step 2: Perform bitwise OR operation`,
+            `Result: ${(a | b).toString(2).padStart(8, '0')}`
+        ];
+    }
+
+    function explainXOR(a, b) {
+        return [
+            `Step 1: Convert ${a} and ${b} to binary`,
+            `A: ${a.toString(2).padStart(8, '0')}`,
+            `B: ${b.toString(2).padStart(8, '0')}`,
+            `Step 2: Perform bitwise XOR operation`,
+            `Result: ${(a ^ b).toString(2).padStart(8, '0')}`
+        ];
+    }
+
+    function explainNOT(a) {
+        return [
+            `Step 1: Convert ${a} to binary`,
+            `A: ${a.toString(2).padStart(8, '0')}`,
+            `Step 2: Perform bitwise NOT operation`,
+            `Result: ${((~a) & 0xFF).toString(2).padStart(8, '0')}`
+        ];
+    }
+
+    function explainOnesComplement(binary) {
+        return [
+            `Step 1: Original binary: ${binary}`,
+            `Step 2: Flip all bits`,
+            `Result: ${calculateOnesComplement(binary)}`
+        ];
+    }
+
+    function explainTwosComplement(binary) {
+        const onesComp = calculateOnesComplement(binary);
+        const twosComp = calculateTwosComplement(binary);
+        return [
+            `Step 1: Original binary: ${binary}`,
+            `Step 2: Calculate 1's complement: ${onesComp}`,
+            `Step 3: Add 1 to 1's complement`,
+            `Result: ${twosComp}`
+        ];
+    }
+
     document.getElementById('stepwise').addEventListener('click', () => {
-        // Implement stepwise explanation logic here
-        console.log('Stepwise explanation requested');
+        const steps = JSON.parse(localStorage.getItem('steps'));
+        if (steps) {
+            alert(steps.join('\n\n'));
+        } else {
+            alert('No steps available. Please perform a calculation first.');
+        }
     });
 });
