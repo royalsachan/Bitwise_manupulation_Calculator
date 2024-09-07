@@ -3,24 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitwise Calculator</title>
+    <title>Binary Calculator</title>
     <link rel="stylesheet" href="230101021-lab_7.-binary_Calculator.css">
 </head>
 <body>
     <div class="calculator">
-        <h1>Bitwise Calculator</h1>
-        <input type="text" id="input" placeholder="Enter Binary Numbers">
+        <div class="result">
+            <input type="text" id="display" readonly>
+        </div>
+        <div class="options">
+            <input type="radio" id="binary" name="mode" checked>
+            <label for="binary">Binary only</label>
+            <input type="radio" id="octal" name="mode">
+            <label for="octal">Octal only</label>
+            <input type="radio" id="both" name="mode">
+            <label for="both">Binary and Decimal</label>
+            <button id="stepwise">Stepwise explanation</button>
+        </div>
         <div class="buttons">
-            <button onclick="insertOperator('&')">AND</button>
-            <button onclick="insertOperator('|')">OR</button>
-            <button onclick="insertOperator('^')">XOR</button>
-            <button onclick="insertOperator('~')">NOT</button>
-            <button onclick="insertOperator('<<')">Left Shift </button>
-            <button onclick="insertOperator('>>')">Right Shift</button>
-            <button id="calculate" onclick="calculate()">Calculate</button>
+            <button class="digit" data-value="0">0</button>
+            <button class="digit" data-value="1">1</button>
+            <button class="operator" data-op="=">=</button>
+            <button class="action" data-action="delete">Delete</button>
+            <button class="action" data-action="reset">Reset</button>
+            <button class="operator" data-op="AND">AND</button>
+            <button class="operator" data-op="OR">OR</button>
+            <button class="action" data-action="prev">Prev</button>
+            <button class="action" data-action="next">Next</button>
+            <button class="operator" data-op="XOR">XOR</button>
+            <button class="operator" data-op="NOT">NOT</button>
+            <button class="action" data-action="first">First</button>
+            <button class="action" data-action="last">Last</button>
+            <button class="operator" data-op="<<"><<</button>
+            <button class="operator" data-op=">>">>></button>
+            <button class="operator" data-op=">>>">>>></button>
+            <button class="operator" data-op="1'sComp">1's Comp</button>
+            <button class="operator" data-op="2'sComp">2's Comp</button>
+            <button class="operator" data-op="*">*</button>
+            <button class="operator" data-op="/">/</button>
         </div>
     </div>
-
-  <script src="230101021-lab_7-Binary_Calculator.js"></script>  
+    <script src="230101021-lab_7-Binary_Calculator.js"></script>
 </body>
 </html>
